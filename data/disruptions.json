@@ -1,0 +1,7 @@
+[
+  {"id":"D-001","title":"Rotterdam Port Congestion","severity":"critical","cause":"Port Congestion","body":"240+ vessels queued. Avg wait 48h.","affectedShipments":["SHP-3302","SHP-4821"],"resolved":false,"timestamp":"2026-04-25T03:42:00Z"},
+  {"id":"D-002","title":"North Atlantic Storm System","severity":"high","cause":"Weather","body":"85-knot winds. 6 vessels rerouting.","affectedShipments":["SHP-2987"],"resolved":false,"timestamp":"2026-04-25T03:15:00Z"},
+  {"id":"D-003","title":"Suez Canal Inspection Backlog","severity":"high","cause":"Infrastructure","body":"Inspection backlog adding +12h eastbound.","affectedShipments":["SHP-7720"],"resolved":false,"timestamp":"2026-04-25T02:19:00Z"},
+  {"id":"D-004","title":"Shanghai Customs Hold","severity":"medium","cause":"Customs","body":"New manifest requirements. ~3-day backlog.","affectedShipments":["SHP-4821","SHP-0934"],"resolved":false,"timestamp":"2026-04-25T02:05:00Z"},
+  {"id":"D-005","title":"DHL-EU Capacity Reduction","severity":"medium","cause":"Carrier Issues","body":"15% capacity cut. 23 shipments flagged.","affectedShipments":[],"resolved":false,"timestamp":"2026-04-25T01:00:00Z"}
+]

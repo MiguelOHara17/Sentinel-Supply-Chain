@@ -1,1 +1,10 @@
-
+[
+  {"id":"SHP-4821","origin":"Shanghai, CN","destination":"Frankfurt, DE","carrier":"MSC","eta":"2026-04-28","status":"disrupted","delayHistory":3,"lat":31.2,"lng":121.5,"dlat":50.1,"dlng":8.7,"weather":{"severity":"moderate","description":"Typhoon advisory, 55 kt winds"}},
+  {"id":"SHP-3302","origin":"Mumbai, IN","destination":"Rotterdam, NL","carrier":"Maersk","eta":"2026-04-27","status":"delayed","delayHistory":2,"lat":18.9,"lng":72.8,"dlat":51.9,"dlng":4.5,"weather":{"severity":"severe","description":"North Sea storm, 85 kt winds"}},
+  {"id":"SHP-5514","origin":"Los Angeles, US","destination":"Tokyo, JP","carrier":"Evergreen","eta":"2026-04-30","status":"on-track","delayHistory":0,"lat":34.0,"lng":-118.2,"dlat":35.7,"dlng":139.7,"weather":{"severity":"clear","description":"Sunny, calm Pacific"}},
+  {"id":"SHP-2987","origin":"Hamburg, DE","destination":"New York, US","carrier":"CMA CGM","eta":"2026-05-02","status":"on-track","delayHistory":1,"lat":53.6,"lng":10.0,"dlat":40.7,"dlng":-74.0,"weather":{"severity":"moderate","description":"Strong winds, 40 kt"}},
+  {"id":"SHP-6641","origin":"Dubai, UAE","destination":"Singapore, SG","carrier":"COSCO","eta":"2026-04-26","status":"disrupted","delayHistory":4,"lat":25.2,"lng":55.3,"dlat":1.3,"dlng":103.8,"weather":{"severity":"clear","description":"Clear skies, 28°C"}},
+  {"id":"SHP-1173","origin":"Busan, KR","destination":"Vancouver, CA","carrier":"HMM","eta":"2026-05-05","status":"on-track","delayHistory":0,"lat":35.1,"lng":129.0,"dlat":49.3,"dlng":-123.1,"weather":{"severity":"clear","description":"Partly cloudy, calm seas"}},
+  {"id":"SHP-7720","origin":"Chennai, IN","destination":"Felixstowe, UK","carrier":"MOL","eta":"2026-05-01","status":"rerouted","delayHistory":2,"lat":13.1,"lng":80.3,"dlat":51.9,"dlng":1.3,"weather":{"severity":"moderate","description":"Monsoon activity, heavy rain"}},
+  {"id":"SHP-0934","origin":"Guangzhou, CN","destination":"Santos, BR","carrier":"MSC","eta":"2026-05-08","status":"on-track","delayHistory":0,"lat":23.1,"lng":113.3,"dlat":-23.9,"dlng":-46.3,"weather":{"severity":"clear","description":"Clear, 24°C"}}
+]
