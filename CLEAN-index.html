@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- SENTINEL_RENDER_LOCK_V2 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — Smart Supply Chain Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0c0e11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div><div class="logo-name">Sentinel</div><div class="logo-tag">Supply Chain AI · v2.0</div></div>
+  </div>
+  <div class="be-status">
+    <div class="be-dot" id="api-dot"></div><span id="api-label">API: checking…</span>
+    <div class="be-dot" id="ws-dot" style="margin-left:10px"></div><span id="ws-label">WS: —</span>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Navigation</div>
+    <button class="nav-btn on" onclick="setNav(this,'Operations Dashboard')">🗂 Dashboard</button>
+    <button class="nav-btn" onclick="setNav(this,'Shipments')">📦 Shipments <span class="chip" id="ac">—</span></button>
+    <button class="nav-btn" onclick="setNav(this,'Route Optimizer')">🗺 Route Optimizer</button>
+    <button class="nav-btn" onclick="setNav(this,'Analytics')">📊 Analytics</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <button class="nav-btn" onclick="openModal('gemini')">✨ Gemini Analyzer</button>
+    <button class="nav-btn" onclick="openModal('config')">⚙ Backend Config</button>
+    <button class="nav-btn" onclick="runDemo()">▶ Demo Mode</button>
+    <button class="nav-btn" onclick="toggleTheme()">☀ Toggle Theme</button>
+  </div>
+  <div class="sb-sec" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div class="sb-lbl">Live Alerts <span id="alert-src" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint)"></span></div>
+    <div class="feed" id="feed"></div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="page-title">Operations Dashboard</div>
+    <div class="tb-right">
+      <div class="live-pill"><div class="pdot"></div>Live</div>
+      <button class="ib" onclick="loadAll()" title="Refresh">🔄</button>
+      <button class="ib" onclick="simEvent()" title="Simulate Disruption">⚡</button>
+      <button class="ib" onclick="exportCSV()" title="Export CSV">⬇</button>
+      <button class="ib" onclick="openModal('gemini')" title="Gemini AI">✨</button>
+    </div>
+  </div>
+  <div class="content"><div id="view-dashboard" class="view-section" style="display:flex;flex-direction:column;gap:20px">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-lbl">Active Shipments</div><div class="kpi-val" id="k-ship">—</div><div class="kpi-sub fl" id="k-ship-sub">Loading…</div><div class="kpi-ico" style="background:var(--blu-d)">📦</div></div>
+      <div class="kpi"><div class="kpi-lbl">Active Disruptions</div><div class="kpi-val" id="k-dis" style="color:var(--red)">—</div><div class="kpi-sub fl" id="k-dis-sub">Loading…</div><div class="kpi-ico" style="background:var(--red-d)">⚠️</div></div>
+      <div class="kpi"><div class="kpi-lbl">On-Time Rate</div><div class="kpi-val" id="k-ot" style="color:var(--grn)">—</div><div class="kpi-sub fl" id="k-ot-sub">Loading…</div><div class="kpi-ico" style="background:var(--grn-d)">✅</div></div>
+      <div class="kpi"><div class="kpi-lbl">High Risk</div><div class="kpi-val" id="k-risk" style="color:var(--ylw)">—</div><div class="kpi-sub fl" id="k-risk-sub">Loading…</div><div class="kpi-ico" style="background:var(--ylw-d)">🛡</div></div>
+    </div>
+    <div class="mgrid">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="card">
+          <div class="ch"><span style="color:var(--pri)">🗺</span><span class="ct">Global Shipment Map</span><span id="map-src" style="font-size:11px;color:var(--muted)">Loading…</span></div>
+          <div id="map"></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span style="color:var(--blu)">📈</span><span class="ct">Disruption Trend — 7 Days</span></div>
+          <div class="cw"><canvas id="tc1"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span>📋</span><span class="ct">Shipment Registry</span><span id="table-src" style="font-size:11px;color:var(--muted)"></span><button class="btn-out" onclick="exportCSV()">⬇ Export</button></div>
+          <div class="twrap"><table>
+            <thead><tr><th>ID</th><th>Origin</th><th>Destination</th><th>Carrier</th><th>ETA</th><th>Weather</th><th>Risk</th><th>Status</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span style="color:var(--ylw)">🕐</span><span class="ct">Event Timeline</span></div>
+          <div class="tl" id="tl"></div>
+        </div>
+      </div>
+      <div class="rpanel">
+        <div class="aip">
+          <div class="aih"><span style="color:var(--pri)">✨</span><span class="ct" style="flex:1">AI Analysis</span><span class="ai-badge">GEMINI</span></div>
+          <div class="ai-body">
+            <p class="ai-txt" id="ai-txt">Initialising risk assessment…</p>
+            <div class="ai-recs" id="ai-recs"></div>
+            <button class="btn-pri" onclick="openModal('gemini')">✨ Run Deep Analysis</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><span style="color:var(--ylw)">🗺</span><span class="ct">Route Optimizer</span><button class="btn-out" style="font-size:10px" onclick="autoReroute()">Auto-Reroute</button></div>
+          <div class="cb" style="padding-top:10px">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">SHP-4821 · Shanghai → Frankfurt</div>
+            <div class="steps" id="steps"></div>
+            <div id="route-rec" style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;display:none"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><span>🍩</span><span class="ct">Disruption Causes</span></div>
+          <div class="cw" style="height:190px"><canvas id="tc2"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div><div id="view-shipments" class="view-section" style="display:none;flex-direction:column;gap:20px">
+  <div class="card">
+    <div class="ch"><span style="color:var(--blu)">📋</span><span class="ct">Full Shipment Registry</span><button class="btn-out" onclick="exportCSV()">⬇ Export CSV</button></div>
+    <div class="twrap"><table><thead><tr><th>ID</th><th>Origin</th><th>Destination</th><th>Carrier</th><th>ETA</th><th>Weather</th><th>Risk</th><th>Status</th></tr></thead><tbody id="tbody-s"></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="color:var(--ylw)">🕐</span><span class="ct">Live Event Timeline</span></div>
+    <div class="tl" id="tl-s" style="max-height:360px;overflow-y:auto"></div>
+  </div>
+</div><div id="view-routeoptimizer" class="view-section" style="display:none;flex-direction:column;gap:20px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="card">
+      <div class="ch"><span style="color:var(--ylw)">🗺</span><span class="ct">Active Route — SHP-4821</span><button class="btn-out" style="font-size:10px" onclick="autoReroute()">Auto-Reroute</button></div>
+      <div class="cb" style="padding-top:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">SHP-4821 · Shanghai → Frankfurt</div>
+        <div class="steps" id="steps-r"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span style="color:var(--pri)">⚡</span><span class="ct">All Shipment Risk Scores</span></div>
+      <div class="cb" style="padding:10px 14px"><div id="risk-list-r" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="color:var(--grn)">📡</span><span class="ct">Route Intelligence</span></div>
+    <div class="cb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:16px;text-align:center">
+        <div style="font-size:26px;font-weight:800;color:var(--grn)">18h</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Delay Avoided Today</div></div>
+      <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:16px;text-align:center">
+        <div style="font-size:26px;font-weight:800;color:var(--ylw)" id="ri-rerouted">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Active Reroutes</div></div>
+      <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:16px;text-align:center">
+        <div style="font-size:26px;font-weight:800;color:var(--blu)">6</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Monitored Corridors</div></div>
+    </div>
+  </div>
+</div><div id="view-analytics" class="view-section" style="display:none;flex-direction:column;gap:20px">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-lbl">Total Shipments</div><div class="kpi-val" id="an-total">—</div><div class="kpi-sub fl" id="an-sub1">Loading</div></div>
+    <div class="kpi"><div class="kpi-lbl">Disruption Rate</div><div class="kpi-val" id="an-disrate" style="color:var(--red)">—</div><div class="kpi-sub fl" id="an-sub2">Loading</div></div>
+    <div class="kpi"><div class="kpi-lbl">Avg Risk Score</div><div class="kpi-val" id="an-avgrisk" style="color:var(--ylw)">—</div><div class="kpi-sub fl" id="an-sub3">Loading</div></div>
+    <div class="kpi"><div class="kpi-lbl">Rerouted Today</div><div class="kpi-val" id="an-rerouted" style="color:var(--grn)">—</div><div class="kpi-sub fl">delays saved</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="card">
+      <div class="ch"><span style="color:var(--blu)">📈</span><span class="ct">Disruption Trend — 7 Days</span></div>
+      <div class="cw" style="height:240px;position:relative"><canvas id="tc-a1"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span style="color:var(--red)">🍩</span><span class="ct">Disruption Causes</span></div>
+      <div class="cw" style="height:240px;position:relative"><canvas id="tc-a2"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="color:var(--pri)">🚢</span><span class="ct">Carrier Performance</span></div>
+    <div class="cb" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="carrier-grid"></div>
+  </div>
+</div></div>
+</div>
+
+<div class="ov" id="m-gemini">
+  <div class="modal">
+    <div class="mh"><span style="color:var(--pri)">✨</span><span class="mt">Gemini AI — Disruption Analyzer</span><button class="ib" onclick="closeModal('gemini')">✕</button></div>
+    <div class="mb">
+      <div class="note">🔑 Get a free key at <strong>aistudio.google.com</strong>. If backend is running with GEMINI_API_KEY set, leave this blank.</div>
+      <div class="fg"><label class="fl">Gemini API Key (optional override)</label><input class="fi2" type="password" id="gkey" placeholder="AIza…"></div>
+      <div class="fg">
+        <label class="fl">Select Scenario</label>
+        <select class="fs" id="gscen" onchange="prefill()">
+          <option value="">— Choose a scenario —</option>
+          <option value="weather">🌪 Severe weather — North Atlantic</option>
+          <option value="port">🚢 Port congestion — Rotterdam</option>
+          <option value="customs">📋 Customs delay — EU backlog</option>
+          <option value="carrier">🚛 Carrier failure — DHL-EU</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Describe the disruption</label><textarea class="fta" id="gprompt" placeholder="e.g. Storm near Rotterdam. 340 shipments at risk. Actions?"></textarea></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-pri" onclick="runGemini()" id="gbtn">✨ Analyze</button>
+        <button class="btn-out" onclick="closeModal('gemini')">Cancel</button>
+      </div>
+      <div class="fl" style="margin-top:18px">AI Response</div>
+      <div class="gout" id="gout"></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="m-config">
+  <div class="modal">
+    <div class="mh"><span>⚙</span><span class="mt">Backend Configuration</span><button class="ib" onclick="closeModal('config')">✕</button></div>
+    <div class="mb">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.7">Set your backend API and WebSocket URLs. Saved in localStorage.</p>
+      <div class="fg"><label class="fl">REST API Base URL</label><input class="fi2" id="cfg-api" type="text" value="https://sentinel-supply-chain.onrender.com" placeholder="https://sentinel-supply-chain.onrender.com"></div>
+      <div class="fg"><label class="fl">WebSocket URL</label><input class="fi2" id="cfg-ws" type="text" value="wss://sentinel-supply-chain.onrender.com" placeholder="wss://sentinel-supply-chain.onrender.com"></div>
+      <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:6px;padding:14px;margin-bottom:18px;font-size:11px">
+        <div style="font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Status</div>
+        <div style="display:flex;gap:10px;margin-bottom:6px"><span style="color:var(--muted);min-width:100px">API Health</span><span id="cfg-api-status" style="color:var(--txt)">—</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:6px"><span style="color:var(--muted);min-width:100px">WebSocket</span><span id="cfg-ws-status" style="color:var(--txt)">—</span></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--muted);min-width:100px">Data Source</span><span id="cfg-source" style="color:var(--txt)">—</span></div>
+      </div>
+      <div style="display:flex;gap:10px"><button class="btn-pri" onclick="saveConfig()">💾 Save & Connect</button><button class="btn-out" onclick="closeModal('config')">Close</button></div>
+    </div>
+  </div>
+</div>
+<div id="tc"></div>
+<script src="app1.js"></script>
+<script src="app2.js"></script>
+</body>
+</html>
