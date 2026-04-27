@@ -346,8 +346,8 @@ tbody td{padding:10px 14px;font-size:12px}
     <div class="mh"><span>⚙</span><span class="mt">Backend Configuration</span><button class="ib" onclick="closeModal('config')">✕</button></div>
     <div class="mb">
       <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.7">Set your backend API and WebSocket URLs. Saved in localStorage.</p>
-      <div class="fg"><label class="fl">REST API Base URL</label><input class="fi2" id="cfg-api" type="text" placeholder="https://sentinel-supply-chain.onrender.com"></div>
-      <div class="fg"><label class="fl">WebSocket URL</label><input class="fi2" id="cfg-ws" type="text" placeholder="wss://sentinel-supply-chain.onrender.com"></div>
+      <div class="fg"><label class="fl">REST API Base URL</label><input class="fi2" id="cfg-api" type="text" value="https://sentinel-supply-chain.onrender.com" placeholder="https://sentinel-supply-chain.onrender.com"></div>
+      <div class="fg"><label class="fl">WebSocket URL</label><input class="fi2" id="cfg-ws" type="text" value="wss://sentinel-supply-chain.onrender.com" placeholder="wss://sentinel-supply-chain.onrender.com"></div>
       <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:6px;padding:14px;margin-bottom:18px;font-size:11px">
         <div style="font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Status</div>
         <div style="display:flex;gap:10px;margin-bottom:6px"><span style="color:var(--muted);min-width:100px">API Health</span><span id="cfg-api-status" style="color:var(--txt)">—</span></div>
@@ -672,6 +672,8 @@ let dStep=-1;
 const DEMO=[()=>toast('inf','Step 1/4 — KPI cards show live health metrics'),()=>{leafMap&&leafMap.setView([31.2,121.5],5,{animate:true});toast('inf','Step 2/4 — SHP-4821 focused. Click marker for full risk breakdown.');},()=>simEvent(),()=>{autoReroute();toast('ok','Step 4/4 — Route optimised. 18h delay avoided!');dStep=-1;}];
 function runDemo(){dStep=(dStep+1)%DEMO.length;DEMO[dStep]();}
 document.addEventListener('DOMContentLoaded',async()=>{
+  localStorage.setItem('sentinel_api','https://sentinel-supply-chain.onrender.com');
+localStorage.setItem('sentinel_ws','wss://sentinel-supply-chain.onrender.com');
   
   
   const _ae=document.getElementById('cfg-api'),_we=document.getElementById('cfg-ws');
