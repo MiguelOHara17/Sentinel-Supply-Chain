@@ -565,88 +565,97 @@ async function runGemini(){
 }
 
 function generateOfflineAnalysis(prompt){
-  const p=prompt.toLowerCase();
-  const isWeather=p.includes('storm')||p.includes('weather')||p.includes('typhoon')||p.includes('cyclone')||p.includes('wind');
-  const isPort=p.includes('port')||p.includes('congestion')||p.includes('rotterdam')||p.includes('shanghai');
-  const isCustoms=p.includes('custom')||p.includes('manifest')||p.includes('documentation');
-  const isCarrier=p.includes('carrier')||p.includes('capacity')||p.includes('dhl')||p.includes('maersk');
+  const p = prompt.toLowerCase();
+
+  const isWeather = p.includes('storm') || p.includes('weather') || p.includes('typhoon') || p.includes('cyclone') || p.includes('wind');
+  const isPort = p.includes('port') || p.includes('congestion') || p.includes('rotterdam') || p.includes('shanghai');
+  const isCustoms = p.includes('custom') || p.includes('manifest') || p.includes('documentation');
+  const isCarrier = p.includes('carrier') || p.includes('capacity') || p.includes('dhl') || p.includes('maersk');
+
   if(isWeather) return `1. IMPACT ASSESSMENT
-Severe weather event detected on primary corridor. 6-8 active shipments at risk with estimated 24-72h delays. Wave heights exceeding safe operating thresholds. Port operations suspended at affected terminals.
+Severe weather event detected on primary corridor. 6-8 active shipments at risk with estimated 24-72h delays.
 
 2. IMMEDIATE ACTIONS
-• Halt all non-critical departures from affected corridor for 48h
-• Activate pre-approved alternate routing via southern passage
-• Notify consignees of estimated 2-3 day delay — file force majeure documentation
-• Coordinate with Maersk/MSC for vessel repositioning
-• Deploy expedited air freight for time-critical cargo (pharma, perishables)
+• Halt non-critical departures
+• Activate alternate routing
+• Notify stakeholders
+• Coordinate carriers
+• Use air freight for critical cargo
 
 3. REROUTING RECOMMENDATION
-Primary: Divert via Cape of Good Hope (+4 days, avoids storm entirely)
-Secondary: Hold at nearest safe port and await weather window (36-48h)
-Estimated cost impact: $180,000-$240,000 per rerouted vessel
+Divert via safer corridor or hold position until safe.
 
 4. RISK TIMELINE
-24h: Maximum weather intensity — zero vessel movement recommended
-72h: Storm passing, port reopening expected, backlog clearing begins
-7-day: Full corridor restoration, 340 backlogged shipments cleared`;
+24h: Peak disruption
+72h: Recovery begins
+7-day: Normal operations`;
 
   if(isPort) return `1. IMPACT ASSESSMENT
-Port congestion creating cascading delays across European supply chain. Vessel queue averaging 48-72h wait time. 240+ vessels affected. Inland logistics backing up at rail and road connections.
+Port congestion causing cascading delays.
 
 2. IMMEDIATE ACTIONS
-• Divert low-priority vessels to Hamburg, Felixstowe, or Antwerp
-• Negotiate priority berthing slots for high-value cargo (add'l cost ~$15K/vessel)
-• Activate inland rail alternatives from Bremerhaven for time-sensitive loads
-• Issue shipper advisories — set new ETAs +3-5 days
-• Pre-clear customs documentation to minimise terminal dwell time
+• Divert shipments
+• Prioritize high-value cargo
+• Use alternate ports
+• Notify clients
 
 3. REROUTING RECOMMENDATION
-Hamburg: +18h transit, 60% capacity available — recommended for SHP-3302, SHP-4821
-Felixstowe: +24h, good rail connections to European distribution hubs
-Antwerp: Best option for Rhine corridor destinations
+Use Hamburg / Antwerp alternatives.
 
 4. RISK TIMELINE
-24h: Congestion worsening — avoid new bookings into affected port
-72h: Partial berth availability as earliest vessels clear
-7-day: Return to normal operations if no secondary disruptions`;
+24h: Congestion worsens
+72h: Partial clearance
+7-day: Stabilization`;
 
   if(isCustoms) return `1. IMPACT ASSESSMENT
-Customs documentation backlog affecting 12-18 shipments. New regulatory requirement creating 48-72h processing delays. Risk of perishable cargo loss and contractual penalty exposure estimated at $2.1M.
+Customs backlog causing 48-72h delays.
 
 2. IMMEDIATE ACTIONS
-• Immediately file updated manifests for all affected shipments via customs portal
-• Engage licensed customs broker for expedited processing — priority queue available
-• Identify which shipments have time-critical delivery windows (flag for air reroute)
-• Brief sales and operations teams on delay notifications to end customers
-• Request temporary storage at bonded warehouse to avoid demurrage charges
+• Update manifests
+• Engage customs broker
+• Identify critical shipments
+• Notify stakeholders
 
 3. REROUTING RECOMMENDATION
-Air freight for highest-value / most time-sensitive cargo (top 20% by value)
-Road transport for EU-internal shipments avoiding customs bottleneck
-Remaining cargo: hold at port under bonded status pending clearance
+Use air/road alternatives where possible.
 
 4. RISK TIMELINE
-24h: File all manifest updates — broker engagement critical
-72h: Expedited processing expected for compliant shipments
-7-day: Full backlog cleared, normal processing resumed`;
+24h: Documentation fixes
+72h: Clearance begins
+7-day: Normal flow restored`;
 
+  if(isCarrier) return `1. IMPACT ASSESSMENT
+Carrier capacity disruption affecting shipments.
+
+2. IMMEDIATE ACTIONS
+• Reassign shipments
+• Contact alternate carriers
+• Adjust delivery timelines
+
+3. REROUTING RECOMMENDATION
+Shift load to available carriers.
+
+4. RISK TIMELINE
+24h: Capacity adjustment
+72h: Partial recovery
+7-day: Stable operations`;
+
+  // DEFAULT FALLBACK (THIS WAS BROKEN BEFORE)
   return `1. IMPACT ASSESSMENT
-Disruption detected affecting ${S.shipments?.filter(s=>s.status==='disrupted').length||3} active shipments. Risk engine flagging elevated exposure across primary trade corridors. Estimated delay impact: 24-96 hours depending on disruption severity.
+Disruption detected affecting ${S.shipments?.filter(s=>s.status==='disrupted').length || 3} shipments.
 
 2. IMMEDIATE ACTIONS
-• Activate Sentinel real-time monitoring for all affected shipment IDs
-• Initiate carrier communication protocol for status confirmation
-• Assess inventory buffer at destination warehouses — flag if <7 days stock
-• Prepare customer advisory for potential delay notification
-• Review insurance coverage for force majeure clause applicability
+• Monitor shipments
+• Communicate delays
+• Prepare alternate routes
 
 3. REROUTING RECOMMENDATION
-Sentinel Route Optimizer identifying alternate corridors with lower risk exposure. Estimated delay savings of 12-18 hours available via eastern corridor bypass. Cost delta: approximately $45,000 per affected vessel.
+Use alternate corridors with lower risk.
 
 4. RISK TIMELINE
-24h: Monitor situation closely — avoid committing additional cargo to affected route
-72h: Rerouting decision window closes — commit to alternate by hour 36
-7-day: Full risk assessment and carrier performance review`;
+24h: Monitoring
+72h: Rerouting
+7-day: Stabilization`;
 }
 function exportCSV(){
   const hdr=['ID','Origin','Destination','Carrier','ETA','Weather','Risk Score','Risk Level','Status'];
