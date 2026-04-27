@@ -360,7 +360,7 @@ tbody td{padding:10px 14px;font-size:12px}
 </div>
 <div id="tc"></div>
 <script>
-const CFG={api:localStorage.getItem('sentinel_api')||'https://sentinel-supply-chain.onrender.com',ws:localStorage.getItem('sentinel_ws')||'wss://sentinel-supply-chain.onrender.com'};
+const CFG={api:localStorage.getItem('sentinel_api')||'http://localhost:3001',ws:localStorage.getItem('sentinel_ws')||'ws://localhost:3002'};
 let S={shipments:[],disruptions:[],alerts:[],wsConn:null,backendOnline:false,tlEvents:[],rerouted:0};
 const CONGESTED=['Rotterdam','Shanghai','Dubai','Mumbai','Singapore','Felixstowe'];
 const BAD_CARRIERS=['MSC','COSCO'];
