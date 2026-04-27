@@ -911,15 +911,14 @@ function syncViews(){
         { label:'Rerouted', data:[2,3,2,5,8,6,5], borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,.06)', fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#3b82f6' },
         { label:'Resolved', data:[2,3,3,4,3,2,2], borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,.05)', fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#22c55e' }
       ] }, options: baseOpts });
-      new Chart(c2.getContext('2d'), { type:'doughnut', data:{ labels:['Weather','Port Congestion','Carrier Issues','Customs','Infrastructure'], datasets:[{ data:[31,27,18,14,10], backgroundColor:['#3b82f6','#ef4444','#f59e0b','#00d9b8','#a78bfa'], borderColor:'#111418', borderWidth:3, hoverOffset:8 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{ position:'bottom', labels:{ color:tc, font:{ family:'Inter', size:10 }, boxWidth:10, padding:12 } } }, animation:{ duration:900, animateRotate:true } }
-    )}
+      new Chart(c2.getContext('2d'), { type:'doughnut', data:{ labels:['Weather','Port Congestion','Carrier Issues','Customs','Infrastructure'], datasets:[{ data:[31,27,18,14,10], backgroundColor:['#3b82f6','#ef4444','#f59e0b','#00d9b8','#a78bfa'], borderColor:'#111418', borderWidth:3, hoverOffset:8 }] }, options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{ position:'bottom', labels:{ color:tc, font:{ family:'Inter', size:10 }, boxWidth:10, padding:12 } } }, animation:{ duration:900, animateRotate:true } } );
+    }
   }
 }
 
-// ═══════════ INITIAL BOOT SEQUENCE (CLEAN) ═══════════
+// ═══════════ BOOT ═══════════
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // Force localStorage to Render URLs for consistency
     localStorage.setItem('sentinel_api', 'https://sentinel-supply-chain.onrender.com');
     localStorage.setItem('sentinel_ws', 'wss://sentinel-supply-chain.onrender.com');
     const apiInput = document.getElementById('cfg-api');
@@ -927,7 +926,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(apiInput) apiInput.value = 'https://sentinel-supply-chain.onrender.com';
     if(wsInput) wsInput.value = 'wss://sentinel-supply-chain.onrender.com';
 
-    // Step 1: instantly display mock data so UI is never blank
     initCharts();
     MOCK_DIS.forEach(d => {
       const sv = d.severity==='critical'?'crit':d.severity==='high'?'high':'med';
@@ -947,7 +945,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     syncViews();
     toast('inf','Loading live data from backend…');
 
-    // Step 2: attempt backend connection in background (demo mode fallback seamless)
     connectWS();
     setTimeout(async () => {
       await loadAll();
@@ -958,7 +955,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Init error:', e);
     document.getElementById('api-label').textContent = 'Init error — check console';
   }
-});
+}); // <-- This closing brace is balanced
 </script>
 </body>
 </html>
