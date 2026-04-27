@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+  <!-- SENTINEL_RENDER_LOCK_V2 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sentinel — Smart Supply Chain Monitor</title>
@@ -397,6 +398,8 @@ const MOCK_DIS=[
   {id:'D-005',title:'DHL-EU Capacity Reduction',severity:'medium',body:'15% capacity cut. 23 shipments flagged.',resolved:false,timestamp:'2026-04-25T01:00:00Z'},
 ];
 async function checkHealth(){
+  // Show connecting state
+  document.getElementById('api-label').textContent='API: connecting…';
   try{const r=await fetch(CFG.api+'/api/health',{signal:(()=>{const c=new AbortController();setTimeout(()=>c.abort(),3000);return c.signal;})()});const d=await r.json();
     if(d.status==='ok'){S.backendOnline=true;document.getElementById('api-dot').classList.add('online');document.getElementById('api-label').textContent='API: online';document.getElementById('cfg-api-status').textContent='✓ Connected';document.getElementById('cfg-source').textContent='Live backend';return true;}}
   catch{S.backendOnline=false;document.getElementById('api-dot').classList.remove('online');document.getElementById('api-label').textContent='API: offline';document.getElementById('cfg-api-status').textContent='✗ Offline — using mock data';document.getElementById('cfg-source').textContent='Built-in mock data';}
@@ -499,6 +502,8 @@ async function autoReroute(){
   if(S.backendOnline){try{await fetch(CFG.api+'/api/shipments/SHP-4821/status',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'rerouted'})});}catch{}}
 }
 function initCharts(){
+  const tc1=document.getElementById('tc1'),tc2=document.getElementById('tc2');
+  if(!tc1||!tc2){console.warn('Charts: canvas not ready');return;}
   const gc='rgba(255,255,255,.04)',tc='#6b737e';
   const opts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{family:'Inter',size:11},boxWidth:12}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{family:'Inter',size:11}}},y:{grid:{color:gc},ticks:{color:tc,font:{family:'Inter',size:11}}}},animation:{duration:800}};
   new Chart(document.getElementById('tc1').getContext('2d'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Disruptions',data:[4,6,5,9,11,8,7],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#ef4444'},{label:'Rerouted',data:[2,3,2,5,8,6,5],borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.06)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#3b82f6'},{label:'Resolved',data:[2,3,3,4,3,2,2],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.05)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#22c55e'}]},options:opts});
@@ -671,15 +676,38 @@ function toast(type,msg){const c=document.getElementById('tc'),t=document.create
 let dStep=-1;
 const DEMO=[()=>toast('inf','Step 1/4 — KPI cards show live health metrics'),()=>{leafMap&&leafMap.setView([31.2,121.5],5,{animate:true});toast('inf','Step 2/4 — SHP-4821 focused. Click marker for full risk breakdown.');},()=>simEvent(),()=>{autoReroute();toast('ok','Step 4/4 — Route optimised. 18h delay avoided!');dStep=-1;}];
 function runDemo(){dStep=(dStep+1)%DEMO.length;DEMO[dStep]();}
-document.addEventListener('DOMContentLoaded',async()=>{
+document.addEventListener('DOMContentLoaded',async()=>{try{
+  // Force clear stale localStorage values and hardcode Render URL
   localStorage.setItem('sentinel_api','https://sentinel-supply-chain.onrender.com');
-localStorage.setItem('sentinel_ws','wss://sentinel-supply-chain.onrender.com');
-  
-  
+  localStorage.setItem('sentinel_ws','wss://sentinel-supply-chain.onrender.com');
   const _ae=document.getElementById('cfg-api'),_we=document.getElementById('cfg-ws');
-  if(_ae)_ae.value='https://sentinel-supply-chain.onrender.com'; if(_we)_we.value='wss://sentinel-supply-chain.onrender.com';
+  if(_ae)_ae.value='https://sentinel-supply-chain.onrender.com';
+  if(_we)_we.value='wss://sentinel-supply-chain.onrender.com';
+
+  // ── Step 1: Render mock data IMMEDIATELY so app is never blank ──
   initCharts();
   MOCK_DIS.forEach(d=>{const sv=d.severity==='critical'?'crit':d.severity==='high'?'high':'med';addTL(sv,d.title+': '+d.body,new Date(d.timestamp).toLocaleTimeString());});
+  addTL('res','SHP-7720 successfully rerouted. 11h delay avoided.','08:53 AM');
+  addTL('med','Gemini AI pre-flagged customs bottleneck 6h before onset.','07:55 AM');
+  S.shipments=MOCK_SHIPS; S.disruptions=MOCK_DIS;
+  try{updateKPIs();}catch(e){}
+  try{renderFeed();}catch(e){}
+  try{renderTable();}catch(e){}
+  try{renderMap();}catch(e){}
+  try{renderAI();}catch(e){}
+  try{renderTimeline();}catch(e){}
+  try{renderRoute();}catch(e){}
+  try{syncViews();}catch(e){}
+  toast('inf','Loading live data from backend…');
+
+  // ── Step 2: Try backend in background (Render cold start can take 30-60s) ──
+  connectWS();
+  setTimeout(async()=>{
+    await loadAll();
+    setTimeout(()=>toast('ok','✓ Sentinel online — monitoring active'),400);
+    setInterval(loadAll,120000);
+  },100);
+}catch(e){console.error('Init error:',e);document.getElementById('api-label').textContent='Init error — check console';};
   addTL('res','SHP-7720 successfully rerouted. 11h delay avoided.','08:53 AM');
   addTL('med','Gemini AI pre-flagged customs bottleneck 6h before onset.','07:55 AM');
   await loadAll();
