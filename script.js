@@ -497,19 +497,21 @@ function syncViews(){
   if(tb && tbSrc) tb.innerHTML = tbSrc.innerHTML;
   const tlS = document.getElementById('tl-s'), tlSrc = document.getElementById('tl');
   if(tlS && tlSrc) tlS.innerHTML = tlSrc.innerHTML;
-  const stepsR = document.getElementById('steps-r'), stepsSrc = document.getElementById('steps');
-  if(stepsR && stepsSrc) stepsR.innerHTML = stepsSrc.innerHTML;
+ const stepsR = document.getElementById('steps-r'), stepsSrc = document.getElementById('steps');
+if(stepsR && stepsSrc) stepsR.innerHTML = stepsSrc.innerHTML;
+const rrR = document.getElementById('route-rec-r'), rrSrc = document.getElementById('route-rec');
+if(rrR && rrSrc){ rrR.innerHTML = rrSrc.innerHTML; rrR.style.display = rrSrc.style.display; }
   const rl = document.getElementById('risk-list-r');
   if(rl){
     rl.innerHTML = S.shipments.map(s => {
       const r = s.riskScore||calcRisk(s);
       const col = riskCol(r.level);
-      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surf2);border-radius:6px;border-left:3px solid '+col+'">' +
-        '<span style="font-family:var(--mono);color:var(--pri);font-size:11px;min-width:76px">'+s.id+'</span>' +
-        '<span style="flex:1;font-size:11px;color:var(--muted)">'+s.origin+' → '+s.destination+'</span>' +
-        '<div class="rbar"><div class="rbar-track"><div class="rbar-fill" style="width:'+r.score+'%;background:'+col+'"></div></div></div>' +
-        '<span style="color:'+col+';font-weight:700;font-size:11px;min-width:24px">'+r.score+'</span>' +
-        '<span class="rb '+r.level+'">'+r.level+'</span></div>';
+      return '<div style="display:flex;align-items:center;gap:10px;padding:9px 10px;background:var(--surf2);border-radius:6px;border-left:3px solid '+col+';transition:background .15s" onmouseover="this.style.background=\'var(--surf3)\'" onmouseout="this.style.background=\'var(--surf2)\'">' +
+        '<span style="font-family:var(--mono);color:var(--pri);font-size:11px;min-width:76px;flex-shrink:0">'+s.id+'</span>' +
+        '<span style="flex:1;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+s.origin+' → '+s.destination+'</span>' +
+        '<div class="rbar" style="flex-shrink:0"><div class="rbar-track"><div class="rbar-fill" style="width:'+r.score+'%;background:'+col+'"></div></div></div>' +
+        '<span style="color:'+col+';font-weight:700;font-size:12px;min-width:28px;text-align:right;flex-shrink:0">'+r.score+'</span>' +
+        '<span class="rb '+r.level+'" style="flex-shrink:0">'+r.level.toUpperCase()+'</span></div>';
     }).join('');
   }
   const riR = document.getElementById('ri-rerouted');
