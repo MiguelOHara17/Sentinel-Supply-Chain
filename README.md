@@ -1,203 +1,232 @@
 # Sentinel, Smart Supply Chain Monitor
 
-> **Google Solution Challenge 2026** | UN SDG 9, Industry, Innovation & Infrastructure
+# 🚀 Sentinel — Real-Time AI Supply Chain Intelligence
 
-Sentinel is an AI-powered supply chain disruption intelligence platform that detects, analyzes, and resolves global shipping disruptions in real time using Google's Gemini AI.
+> **Detect. Decide. Act — in under 60 seconds.**
+> Google Solution Challenge 2026 | UN SDG 9, Industry, Innovation & Infrastructure
 
-![Sentinel Dashboard](./screenshot.png)
+Sentinel is a browser-based AI platform that monitors global shipments, detects disruptions in real time, and uses Google Gemini AI to generate actionable decisions and reroute strategies instantly.
 
+---
 
-## Problem Statement
+## 🌐 Live Demo
 
-Global supply chains lose **$1.5 trillion annually** due to disruptions from port congestion, extreme weather, carrier failures, and geopolitical events. Traditional monitoring tools react after a disruption occurs. Logistics teams often learn about issues **hours or days late** and receive no automated guidance on how to respond.
+* 🔗 **Prototype:** https://miguelohara17.github.io/Sentinel-Supply-Chain/
+* 🎥 **Demo Video:** https://youtu.be/7v5SMTP2U7g
 
+⚠️ If the live deployment is temporarily unavailable, the demo video showcases the full working system.
 
+---
 
-## Our Solution
+## 🔍 Quick Demo Guide (2 minutes)
 
-Sentinel offers **proactive, AI-driven supply chain intelligence**:
+1. Open the dashboard → view live shipment map
+2. Click **"Run Deep Analysis"** → trigger Gemini AI
+3. Navigate to **Route Optimizer** → observe rerouting logic
+4. Try this scenario in Gemini Analyzer:
+   *"Port congestion at Rotterdam. 200+ vessels delayed. What should we do?"*
 
-- **Real-time risk scoring** — every shipment is scored from 0 to 100 using a multi-factor engine
-- **Gemini AI analysis** — deep disruption analysis with helpful recommendations
-- **Global shipment tracking** — live map with color-coded risk overlays
-- **WebSocket live alerts** — instant notifications for disruption events
-- **Automated route optimization** — recommendations for alternate routes when paths are blocked
-- **Analytics dashboard** — displays 7-day disruption trends, carrier performance, and risk distribution
+⚠️ Demo mode ensures functionality even if backend/API is unavailable.
 
+---
 
+## 🧠 Problem Statement
 
-## UN SDG Alignment
+Global supply chains lose **$1.5 trillion annually** due to disruptions caused by port congestion, extreme weather, carrier failures, and geopolitical events.
 
-| SDG | How Sentinel Contributes |
-|-----|--------------------------|
-| **SDG 9** — Industry, Innovation & Infrastructure | Strengthens supply chain infrastructure using AI |
-| **SDG 8** — Decent Work & Economic Growth | Cuts economic losses from disruptions |
-| **SDG 17** — Partnerships for the Goals | Facilitates global trade coordination |
+Existing systems:
 
+* Detect issues too late
+* Provide fragmented data
+* Offer no actionable decision support
 
+Result: delays, inefficiencies, and massive financial loss.
 
-## Tech Stack
+---
+
+## 💡 Our Solution
+
+Sentinel bridges the gap between **detection and decision-making**.
+
+### 🔄 Core Workflow
+
+* **Detect Instantly**
+  Real-time monitoring via WebSockets identifies disruptions across shipment corridors
+
+* **Decide in Seconds**
+  Gemini 2.0 Flash generates structured AI analysis:
+
+  * Impact assessment
+  * Immediate actions
+  * Rerouting recommendation
+  * Risk timeline
+
+* **Act Immediately**
+  One-click rerouting updates shipment paths, ETA, and risk dynamically
+
+---
+
+## ⚡ Key Capabilities
+
+### Core Features
+
+* Real-time disruption detection
+* Gemini AI decision engine
+* Automated route optimization
+
+### Supporting Features
+
+* Live global shipment map (Leaflet.js)
+* KPI analytics dashboard
+* WebSocket-based live alerts
+* Offline AI fallback for reliability
+
+---
+
+## 🌍 UN SDG Alignment
+
+| SDG        | Contribution                                        |
+| ---------- | --------------------------------------------------- |
+| **SDG 9**  | Strengthens infrastructure with AI-driven logistics |
+| **SDG 8**  | Reduces economic losses from delays                 |
+| **SDG 17** | Enhances global trade coordination                  |
+
+---
+
+## 🧰 Tech Stack
 
 ### Frontend
-- Vanilla HTML/CSS/JavaScript
-- Leaflet.js — interactive global map
-- Chart.js — data visualizations
-- WebSocket client — live event streaming
+
+* HTML, CSS, JavaScript (Vanilla)
+* Leaflet.js — interactive map
+* Chart.js — analytics visualization
+* WebSocket client — real-time updates
 
 ### Backend
-- Node.js + Express — REST API
-- WebSocket (ws) — real-time event server
-- node-cron — scheduled risk rescoring
-- Firebase Firestore — persistent data storage
-- express-rate-limit — API protection
+
+* Node.js + Express — REST APIs
+* WebSocket (ws) — live event streaming
+* node-cron — scheduled risk recalculation
+* Firebase Firestore — database
+* express-rate-limit — API protection
 
 ### AI & Google Technologies
-- **Gemini 2.0 Flash** — disruption analysis and recommendations
-- **Firebase** — Firestore database and hosting
-- **Google AI Studio** — API key management
 
+* **Gemini 2.0 Flash** — disruption analysis
+* Firebase — real-time data layer
+* Google AI Studio — API integration
 
+---
 
-## Getting Started
+## ⚙️ Getting Started
 
 ### Prerequisites
-- Node.js v18+
-- A Gemini API key from [aistudio.google.com](https://aistudio.google.com)
 
-### 1. Clone the repo
+* Node.js v18+
+* Gemini API key from https://aistudio.google.com
+
+### Setup
+
 ```bash
-git clone https://github.com/YourUsername/sentinel-supply-chain.git
+git clone https://github.com/MiguelOHara17/Sentinel-Supply-Chain.git
 cd sentinel-supply-chain
-```
-
-### 2. Set up the backend
-```bash
 cd sentinel-backend
 npm install
 cp .env.example .env
 ```
 
-Edit `.env` and add your keys:
-//GEMINI_API_KEY=your_gemini_key_here
+Edit `.env`:
+
+```
+GEMINI_API_KEY=your_key_here
 PORT=3001
 WS_PORT=3002
+```
 
+### Run Backend
 
-### 3. Start the backend
 ```bash
 npm run dev
 ```
 
-You should see:
- SENTINEL BACKEND RUNNING
-→ REST API: http://localhost:3001
-→ WS Stream: ws://localhost:3002
+### Run Frontend
 
-### 4. Open the frontend
-Open `supply-chain-sentinel.html` with VS Code Live Server or any HTTP server.
+Open:
 
-### 5. Connect frontend to backend
-- Click **⚙ Backend Config** in the sidebar.
-- Set REST API to `http://localhost:3001`.
-- Set WebSocket to `ws://localhost:3002`.
-- Click **Save & Connect**.
+```
+supply-chain-sentinel.html
+```
 
-The **API dot** should turn green.
+Then configure:
 
+* REST API → http://localhost:3001
+* WebSocket → ws://localhost:3002
 
+---
 
-## API Endpoints
+## 📊 Risk Scoring Engine
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check |
-| GET | `/api/shipments` | All shipments with risk scores |
-| GET | `/api/shipments/:id` | Single shipment detail |
-| PATCH | `/api/shipments/:id/status` | Update shipment status |
-| GET | `/api/disruptions` | All active disruptions |
-| POST | `/api/disruptions` | Create new disruption |
-| PATCH | `/api/disruptions/:id/resolve` | Resolve a disruption |
-| GET | `/api/alerts` | Smart risk-based alerts |
-| GET | `/api/routes/optimize/:id` | Route recommendation for shipment |
-| POST | `/api/routes/analyze` | Gemini AI disruption analysis |
-| GET | `/api/routes/optimize-all` | Batch route optimization |
-| WS | `ws://localhost:3002` | Live event stream |
+Each shipment is scored (0–100) based on:
 
+* Severe weather: +35
+* Moderate weather: +15
+* Port congestion: +20
+* Carrier reliability issues: +15
+* Delay history: +10 to +20
+* Active disruption: +25
 
+**Thresholds:**
 
-## Risk Scoring Engine
+* 0–39 → Low
+* 40–69 → Medium
+* 70–100 → High
 
-Each shipment is scored from 0 to 100 based on:
+---
 
-| Factor | Weight |
-|--------|--------|
-| Severe weather on corridor | +35 |
-| Moderate weather advisory | +15 |
-| High-congestion port on route | +20 |
-| Unreliable carrier history | +15 |
-| 3 or more prior delays detected | +20 |
-| 1 to 2 prior delays | +10 |
-| Active disruption flag | +25 |
-
-**Thresholds:** `0-39` Low, `40-69` Medium, `70-100` High
-
-
-## Project Structure
 ## 📁 Project Structure
+
+```
 sentinel-supply-chain/
-├── supply-chain-sentinel.html # Frontend dashboard
+├── supply-chain-sentinel.html
 ├── README.md
 ├── screenshot.png
 └── sentinel-backend/
-├── server.js # Main entry point
-├── package.json
-├── .env.example
-├── config/
-│ ├── constants.js # Risk weights & thresholds
-│ └── firebase.js # Firebase init
-├── routes/
-│ ├── shipments.js
-│ ├── disruptions.js
-│ ├── alerts.js
-│ └── routes.js
-├── services/
-│ ├── riskEngine.js # Core scoring algorithm
-│ ├── routeOptimizer.js # Alternate route logic
-│ ├── geminiService.js # Gemini AI integration
-│ └── wsSimulator.js # WebSocket server
-├── middleware/
-│ ├── errorHandler.js
-│ └── rateLimiter.js
-└── data/
-├── shipments.json # Seed shipment data
-└── disruptions.json # Seed disruption data
-
-### Team
+    ├── server.js
+    ├── routes/
+    ├── services/
+    ├── middleware/
+    └── data/
+```
 
 ---
 
 ## 👥 Team
 
-| Name | Role |
-|------|------|
+| Name                | Role                        |
+| ------------------- | --------------------------- |
 | Soumyadeep Sengupta | Full Stack + AI Integration |
-| Nafisah Ahmed | UI Design + Testing |
-| Riyana Das | Debugging + Research and documentation|
+| Nafisah Ahmed       | UI Design + Testing         |
+| Riyana Das          | Debugging + Research        |
 
-
+---
 
 ## 📸 Screenshots
 
-### Dashboard Overview
 ![Dashboard](./screenshot.png)
 
 ---
 
 ## 📄 License
 
-MIT License — free to use, modify and distribute.
+MIT License — free to use and modify.
 
 ---
+
+<div align="center">
+<strong>Sentinel — Know before it breaks.</strong><br/>
+Built for Google Solution Challenge 2026
+</div>
+
 
 <div align="center">
   Built with ❤️ for Google Solution Challenge 2026
