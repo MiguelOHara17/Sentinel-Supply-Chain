@@ -443,19 +443,34 @@ function toggleTheme(){
   h.setAttribute('data-theme', n);
   toast('inf','Switched to '+n+' mode');
 }
+function setNav(btn, name) {
 
-function setNav(el, name){
+  // active button
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
-  el.classList.add('on');
+  btn.classList.add('on');
+
+  // update title
   document.getElementById('page-title').textContent = name;
-  const raw = el.textContent.replace(/[^a-zA-Z\s]/g,'').trim().toLowerCase().replace(/\s+/g,'');
-  const vmap = { dashboard:'view-dashboard', shipments:'view-shipments', routeoptimizer:'view-routeoptimizer', analytics:'view-analytics' };
-  const vid = vmap[raw] || 'view-dashboard';
-  document.querySelectorAll('.view-section').forEach(s => s.style.display='none');
-  const tgt = document.getElementById(vid);
-  if(tgt) tgt.style.display='flex';
-  if(raw==='dashboard' && leafMap) setTimeout(() => leafMap.invalidateSize(), 200);
-  syncViews();
+
+  // hide all views
+  document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+
+  // mapping (THIS was your silent killer)
+  const map = {
+    "Operations Dashboard": "view-dashboard",
+    "Shipments": "view-shipments",
+    "Route Optimizer": "view-routeoptimizer",
+    "Analytics": "view-analytics"
+  };
+
+  const id = map[name];
+  const el = document.getElementById(id);
+
+  if (el) {
+    el.style.display = 'flex';
+  } else {
+    console.error("Missing view:", id);
+  }
 }
 
 function toast(type, msg){
