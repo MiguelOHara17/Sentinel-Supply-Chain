@@ -328,24 +328,30 @@ tbody td{padding:10px 14px;font-size:12px}
     <span class="ct">Route Insights</span>
   </div>
 
-  <div class="cb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+</div> <!-- END of mgrid -->
 
-    <!-- Corridors -->
-    <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:14px;text-align:center">
-      <div style="font-size:26px;font-weight:700;color:var(--blu)" id="ri-corridors">12</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Active Corridors</div>
+<!-- ADD THIS BELOW -->
+<div class="card">
+  <div class="ch">
+    <span>🧠</span>
+    <span class="ct">Route Intelligence</span>
+  </div>
+
+  <div class="cb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+
+    <div style="text-align:center">
+      <div style="font-size:32px;font-weight:700;color:var(--grn)">18h</div>
+      <div style="font-size:12px;color:var(--muted)">Delay Avoided Today</div>
     </div>
 
-    <!-- Routes Rerouted -->
-    <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:14px;text-align:center">
-      <div style="font-size:26px;font-weight:700;color:var(--grn)" id="ri-routes">5</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Routes Rerouted</div>
+    <div style="text-align:center">
+      <div style="font-size:32px;font-weight:700;color:var(--ylw)">1</div>
+      <div style="font-size:12px;color:var(--muted)">Active Routes</div>
     </div>
 
-    <!-- Avg Delay Saved -->
-    <div style="background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:14px;text-align:center">
-      <div style="font-size:26px;font-weight:700;color:var(--pri)" id="ri-delay">18%</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Delay Reduction</div>
+    <div style="text-align:center">
+      <div style="font-size:32px;font-weight:700;color:var(--blu)">6</div>
+      <div style="font-size:12px;color:var(--muted)">Monitored Corridors</div>
     </div>
 
   </div>
