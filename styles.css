@@ -132,6 +132,25 @@ tbody td{padding:10px 14px;font-size:12px}
 .ov.open .modal{transform:scale(1)}
 .mh{padding:18px 24px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--surf);z-index:9999}
 .mt{font-weight:700;font-size:15px;flex:1}.mb{padding:18px 24px}
+.mb {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mb input,
+.mb textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #2a2f3a;
+  background: #0f141a;
+  color: #fff;
+}
+
+.mb button {
+  align-self: flex-end;
+}
 .fg{margin-bottom:18px}
 .fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
 .fi2,.fs,.fta{width:100%;background:var(--surf2);border:1px solid var(--bdr2);border-radius:6px;color:var(--txt);font:inherit;font-size:13px;padding:10px 12px;transition:border-color .15s}
