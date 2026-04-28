@@ -159,8 +159,8 @@ supply-chain-sentinel.html
 
 Then configure:
 
-* REST API → http://localhost:3001
-* WebSocket → ws://localhost:3002
+* REST API → [http://localhost:3001](https://sentinel-supply-chain.onrender.com)
+* WebSocket → wss://sentinel-supply-chain.onrender.com
 
 ---
 
