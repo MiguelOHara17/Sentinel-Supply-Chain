@@ -319,13 +319,11 @@ tbody td{padding:10px 14px;font-size:12px}
       </div>
 
       <!-- ═══════ ROUTE OPTIMIZER VIEW ═══════ -->
-      <div id="view-routeoptimizer" class="view-section">
-<div id="view-routeoptimizer" class="view-section">
+     <div id="view-routeoptimizer" class="view-section">
 
-  <!-- 🔹 MAIN GRID -->
   <div class="mgrid">
 
-    <!-- LEFT: Route Optimizer -->
+    <!-- LEFT -->
     <div class="card">
       <div class="ch">
         <span style="color:var(--ylw)">🗺</span>
@@ -334,15 +332,13 @@ tbody td{padding:10px 14px;font-size:12px}
       </div>
 
       <div class="cb">
-        <div class="steps">
-          <div class="step">Shanghai → Singapore</div>
-          <div class="step">Singapore → Dubai</div>
-          <div class="step">Dubai → Rotterdam</div>
+        <div class="steps" id="route-steps">
+          <!-- KEEP this ID if your JS uses it -->
         </div>
       </div>
     </div>
 
-    <!-- RIGHT: Risk Scores -->
+    <!-- RIGHT -->
     <div class="card">
       <div class="ch">
         <span style="color:var(--grn)">📊</span>
@@ -350,19 +346,14 @@ tbody td{padding:10px 14px;font-size:12px}
       </div>
 
       <div class="cb">
-        <div id="risk-list-r">
-          <!-- your dynamic JS content OR static fallback -->
-          <div class="risk-item">Shipment A — High Risk</div>
-          <div class="risk-item">Shipment B — Medium Risk</div>
-          <div class="risk-item">Shipment C — Low Risk</div>
-        </div>
+        <!-- ⚠️ DO NOT REMOVE THIS -->
+        <div id="risk-list-r"></div>
       </div>
     </div>
 
-  </div> <!-- END mgrid -->
+  </div>
 
-
-  <!-- 🔹 FULL WIDTH: Route Intelligence -->
+  <!-- BELOW -->
   <div class="card">
     <div class="ch">
       <span>🧠</span>
@@ -388,9 +379,7 @@ tbody td{padding:10px 14px;font-size:12px}
 
     </div>
   </div>
-
 </div>
-
       <!-- ═══════ ANALYTICS VIEW ═══════ -->
       <div id="view-analytics" class="view-section">
         <div class="an-kpi-row">
