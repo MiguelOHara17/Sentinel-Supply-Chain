@@ -320,69 +320,76 @@ tbody td{padding:10px 14px;font-size:12px}
 
       <!-- ═══════ ROUTE OPTIMIZER VIEW ═══════ -->
       <div id="view-routeoptimizer" class="view-section">
- <!-- MAIN GRID -->
-<div class="mgrid">
+<div id="view-routeoptimizer" class="view-section">
 
-  <!-- LEFT: Route Optimizer -->
-  <div class="card">
-    <!-- your existing route steps code -->
-  </div>
+  <!-- 🔹 MAIN GRID -->
+  <div class="mgrid">
 
-  <!-- RIGHT: Risk Scores -->
-  <div class="card">
-    <!-- your existing risk list -->
-  </div>
+    <!-- LEFT: Route Optimizer -->
+    <div class="card">
+      <div class="ch">
+        <span style="color:var(--ylw)">🗺</span>
+        <span class="ct">Route Optimizer</span>
+        <button class="btn-out">Auto-Reroute</button>
+      </div>
 
-</div> <!-- END mgrid -->
-
-<div class="card">
-  <div class="ch">
-    <span>🧠</span>
-    <span class="ct">Route Intelligence</span>
-  </div>
-
-  <div class="cb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
-
-    <div style="text-align:center">
-      <div style="font-size:32px;font-weight:700;color:var(--grn)">18h</div>
-      <div style="font-size:12px;color:var(--muted)">Delay Avoided Today</div>
-    </div>
-
-    <div style="text-align:center">
-      <div style="font-size:32px;font-weight:700;color:var(--ylw)">1</div>
-      <div style="font-size:12px;color:var(--muted)">Active Routes</div>
-    </div>
-
-    <div style="text-align:center">
-      <div style="font-size:32px;font-weight:700;color:var(--blu)">6</div>
-      <div style="font-size:12px;color:var(--muted)">Monitored Corridors</div>
-    </div>
-
-  </div>
-</div>
-          <div style="display:flex;flex-direction:column;gap:20px">
-            <div class="card">
-              <div class="ch"><span style="color:var(--grn)">📊</span><span class="ct">Risk Assessment — All Shipments</span></div>
-              <div class="cb"><div id="risk-list-r" style="display:flex;flex-direction:column;gap:8px"></div></div>
-            </div>
-          </div>
-          <div class="rpanel">
-            <div class="card">
-              <div class="ch"><span style="color:var(--ylw)">🗺</span><span class="ct">Route Optimizer</span><button class="btn-out" style="font-size:10px" onclick="autoReroute()">Auto-Reroute</button></div>
-              <div class="cb" style="padding-top:10px">
-                <div style="font-size:11px;color:var(--muted);margin-bottom:10px">SHP-4821 · Shanghai → Frankfurt</div>
-                <div class="steps" id="steps-r"></div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="ch"><span>📈</span><span class="ct">Reroute Stats</span></div>
-              <div class="cb" style="display:flex;gap:20px;flex-wrap:wrap">
-                <div style="text-align:center"><div style="font-size:28px;font-weight:700;color:var(--grn)" id="ri-rerouted">—</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Rerouted Today</div></div>
-              </div>
-            </div>
-          </div>
+      <div class="cb">
+        <div class="steps">
+          <div class="step">Shanghai → Singapore</div>
+          <div class="step">Singapore → Dubai</div>
+          <div class="step">Dubai → Rotterdam</div>
         </div>
       </div>
+    </div>
+
+    <!-- RIGHT: Risk Scores -->
+    <div class="card">
+      <div class="ch">
+        <span style="color:var(--grn)">📊</span>
+        <span class="ct">Risk Assessment — All Shipments</span>
+      </div>
+
+      <div class="cb">
+        <div id="risk-list-r">
+          <!-- your dynamic JS content OR static fallback -->
+          <div class="risk-item">Shipment A — High Risk</div>
+          <div class="risk-item">Shipment B — Medium Risk</div>
+          <div class="risk-item">Shipment C — Low Risk</div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- END mgrid -->
+
+
+  <!-- 🔹 FULL WIDTH: Route Intelligence -->
+  <div class="card">
+    <div class="ch">
+      <span>🧠</span>
+      <span class="ct">Route Intelligence</span>
+    </div>
+
+    <div class="cb" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+
+      <div style="text-align:center">
+        <div style="font-size:32px;font-weight:700;color:var(--grn)">18h</div>
+        <div style="font-size:12px;color:var(--muted)">Delay Avoided Today</div>
+      </div>
+
+      <div style="text-align:center">
+        <div style="font-size:32px;font-weight:700;color:var(--ylw)">1</div>
+        <div style="font-size:12px;color:var(--muted)">Active Routes</div>
+      </div>
+
+      <div style="text-align:center">
+        <div style="font-size:32px;font-weight:700;color:var(--blu)">6</div>
+        <div style="font-size:12px;color:var(--muted)">Monitored Corridors</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
       <!-- ═══════ ANALYTICS VIEW ═══════ -->
       <div id="view-analytics" class="view-section">
