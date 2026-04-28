@@ -144,18 +144,50 @@
 </div>
  <div class="ov" id="m-config">
   <div class="modal">
-    <div class="mh">
-      <span class="mt">Backend Config</span>
-      <button onclick="closeModal('config')">✕</button>
-    </div>
-<div class="mb">
-  <div id="cfg-api-status"></div>
-  <div id="cfg-ws-status"></div>
-  <div id="cfg-source"></div>
+  <div class="ov" id="m-config">
+  <div class="modal">
 
-  <input id="cfg-api" placeholder="API URL">
-  <input id="cfg-ws" placeholder="WebSocket URL">
+```
+<!-- HEADER -->
+<div class="mh">
+  <span class="mt">Backend Configuration</span>
+  <button onclick="closeModal('config')">✕</button>
 </div>
+
+<!-- BODY -->
+<div class="mb">
+
+  <div class="cfg-desc">
+    Set your backend API and WebSocket URLs. Saved in localStorage.
+  </div>
+
+  <!-- API -->
+  <label class="cfg-label">REST API BASE URL</label>
+  <input id="cfg-api" placeholder="https://your-api-url.com">
+
+  <!-- WS -->
+  <label class="cfg-label">WEBSOCKET URL</label>
+  <input id="cfg-ws" placeholder="wss://your-websocket-url.com">
+
+  <!-- STATUS -->
+  <div class="cfg-status">
+    <div><span>API Health</span><span id="cfg-api-status">Checking…</span></div>
+    <div><span>WebSocket</span><span id="cfg-ws-status">Connecting…</span></div>
+    <div><span>Data Source</span><span id="cfg-source">—</span></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="cfg-actions">
+    <button onclick="saveConfig()">💾 Save & Connect</button>
+    <button onclick="closeModal('config')" class="secondary">Close</button>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
   </div>
 </div>
   <div id="tc"></div>
